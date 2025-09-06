@@ -1,0 +1,22 @@
+# Ignore version control and local envs
+.git
+.isicvenv
+isicvenv/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.vscode/
+.idea/
+.streamlit/
+
+# Large/runtime folders (kept as empty dirs in image)
+models/*
+!models/.gitkeep
+exports/*
+!exports/.gitkeep
+data/samples/*
+!data/samples/.gitkeep

@@ -1,0 +1,18 @@
+isicvenv/
+.venv/
+venv/
+.env
+__pycache__/
+*.py[cod]
+*.DS_Store
+.streamlit/
+.vscode/
+.idea/
+
+# Keep directories but ignore their contents except .gitkeep
+models/*
+!models/.gitkeep
+exports/*
+!exports/.gitkeep
+data/samples/*
+!data/samples/.gitkeep

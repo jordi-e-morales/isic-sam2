@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <style>
+      .box { fill: #f9fbff; stroke: #3a6ea5; stroke-width: 2; rx: 10; ry: 10; }
+      .box-emp { fill: #eef7ff; stroke: #1e88e5; stroke-width: 2.5; rx: 10; ry: 10; }
+      .note { fill: #fff7e6; stroke: #ffb74d; stroke-width: 2; rx: 8; ry: 8; }
+      .txt { font: 16px Arial, Helvetica, sans-serif; fill: #222; }
+      .ttl { font: 20px Arial, Helvetica, sans-serif; font-weight: bold; fill: #0d47a1; }
+      .cap { font: 13px Arial, Helvetica, sans-serif; fill: #444; }
+      .group-title { font: 14px Arial, Helvetica, sans-serif; fill: #555; font-style: italic; }
+      .flow { stroke: #555; stroke-width: 2.2; marker-end: url(#arrow); }
+      .flow-dash { stroke: #777; stroke-width: 2; stroke-dasharray: 6 6; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" class="ttl">ISIC Interactive Segmentation — Architecture (SAM 2–centric)</text>
+
+  <!-- User -->
+  <rect x="40" y="90" width="200" height="70" class="box"/>
+  <text x="140" y="120" text-anchor="middle" class="txt">User</text>
+  <text x="140" y="145" text-anchor="middle" class="cap">Dermatologist / Annotator</text>
+
+  <!-- UI -->
+  <rect x="300" y="80" width="260" height="120" class="box"/>
+  <text x="430" y="115" text-anchor="middle" class="txt">Streamlit UI</text>
+  <text x="430" y="140" text-anchor="middle" class="cap">Upload image • Select device • Prompt (Point/Box)</text>
+
+  <!-- Device Manager -->
+  <rect x="620" y="70" width="230" height="100" class="box"/>
+  <text x="735" y="105" text-anchor="middle" class="txt">Device Manager</text>
+  <text x="735" y="130" text-anchor="middle" class="cap">Auto/CPU/CUDA (torch.cuda.is_available)</text>
+
+  <!-- Weights -->
+  <rect x="890" y="70" width="260" height="100" class="box"/>
+  <text x="1020" y="105" text-anchor="middle" class="txt">Weights (.pt in models/)</text>
+  <text x="1020" y="130" text-anchor="middle" class="cap">Download or provide checkpoint path</text>
+
+  <!-- Arrows top row -->
+  <line x1="240" y1="125" x2="300" y2="125" class="flow"/>
+  <line x1="560" y1="125" x2="620" y2="120" class="flow"/>
+  <line x1="850" y1="120" x2="890" y2="120" class="flow"/>
+
+  <!-- SAM2 Init -->
+  <rect x="300" y="240" width="380" height="110" class="box-emp"/>
+  <text x="490" y="275" text-anchor="middle" class="txt">Sam2Wrapper init</text>
+  <text x="490" y="300" text-anchor="middle" class="cap">build_sam2(checkpoint, model_type, device)</text>
+  <text x="490" y="322" text-anchor="middle" class="cap">SAM2ImagePredictor(model)</text>
+
+  <!-- Connectors to SAM2 Init -->
+  <line x1="735" y1="170" x2="630" y2="240" class="flow"/>
+  <line x1="1020" y1="170" x2="670" y2="240" class="flow"/>
+
+  <!-- Segmentation Engine group label -->
+  <text x="490" y="385" text-anchor="middle" class="group-title">Segmentation Engine</text>
+
+  <!-- SAM2 Predictor -->
+  <rect x="220" y="400" width="320" height="110" class="box-emp"/>
+  <text x="380" y="435" text-anchor="middle" class="txt">SAM 2 Predictor.predict()</text>
+  <text x="380" y="460" text-anchor="middle" class="cap">Input: image + point/box → Mask(s), Score(s)</text>
+
+  <!-- Fallback -->
+  <rect x="580" y="400" width="320" height="110" class="box"/>
+  <text x="740" y="435" text-anchor="middle" class="txt">Classical Fallback</text>
+  <text x="740" y="460" text-anchor="middle" class="cap">Flood/Otsu + morphology (largest component)</text>
+
+  <!-- Decision arrows -->
+  <line x1="490" y1="350" x2="380" y2="400" class="flow"/>
+  <line x1="490" y1="350" x2="740" y2="400" class="flow-dash"/>
+  <text x="418" y="392" class="cap">SAM2 ready</text>
+  <text x="760" y="392" class="cap">else</text>
+
+  <!-- Post-process -->
+  <rect x="220" y="560" width="260" height="90" class="box"/>
+  <text x="350" y="595" text-anchor="middle" class="txt">Post-process</text>
+  <text x="350" y="618" text-anchor="middle" class="cap">Largest component, resize</text>
+
+  <!-- Viz -->
+  <rect x="520" y="560" width="260" height="90" class="box"/>
+  <text x="650" y="595" text-anchor="middle" class="txt">Visualization</text>
+  <text x="650" y="618" text-anchor="middle" class="cap">Overlay + contour</text>
+
+  <!-- Metrics -->
+  <rect x="820" y="560" width="260" height="90" class="box"/>
+  <text x="950" y="595" text-anchor="middle" class="txt">Metrics</text>
+  <text x="950" y="618" text-anchor="middle" class="cap">ABCD-style (A/B/C/D)</text>
+
+  <!-- Downloads -->
+  <rect x="520" y="690" width="260" height="90" class="box"/>
+  <text x="650" y="725" text-anchor="middle" class="txt">Downloads / Exports</text>
+  <text x="650" y="748" text-anchor="middle" class="cap">Mask PNG • Overlay PNG • Metrics JSON</text>
+
+  <!-- Image & Prompt to Engine -->
+  <rect x="40" y="240" width="220" height="110" class="box"/>
+  <text x="150" y="275" text-anchor="middle" class="txt">Inputs</text>
+  <text x="150" y="300" text-anchor="middle" class="cap">Image (RGB), Prompt (Point/Box)</text>
+
+  <line x1="260" y1="295" x2="300" y2="295" class="flow"/>
+
+  <!-- Engine outputs to post-process -->
+  <line x1="380" y1="510" x2="350" y2="560" class="flow"/>
+  <line x1="740" y1="510" x2="350" y2="560" class="flow"/>
+
+  <!-- Post-process to Viz/Metrics/Downloads -->
+  <line x1="480" y1="605" x2="520" y2="605" class="flow"/>
+  <line x1="780" y1="605" x2="820" y2="605" class="flow"/>
+  <line x1="650" y1="650" x2="650" y2="690" class="flow"/>
+
+  <!-- SAM2 Relevance Note -->
+  <rect x="890" y="240" width="260" height="110" class="note"/>
+  <text x="1020" y="270" text-anchor="middle" class="txt">Why SAM 2 matters</text>
+  <text x="1020" y="295" text-anchor="middle" class="cap">Promptable, high‑quality masks</text>
+  <text x="1020" y="315" text-anchor="middle" class="cap">Generalizes without re‑training</text>
+</svg>
