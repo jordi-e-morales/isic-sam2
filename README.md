@@ -100,5 +100,72 @@ SAM 2 relevance:
 - On Windows, long paths and special OneDrive permissions can sometimes cause install issues. If so, try a local non-synced folder.
 - For GPU: make sure you installed a CUDA-enabled PyTorch build matching your installed NVIDIA drivers.
 
+## Docker
+
+You can run the app in a container. Two options are provided:
+
+1) CPU image (portable anywhere)
+
+Build (from repo root):
+
+PowerShell (Windows):
+```
+docker build -t isic-sam2-demo:cpu .
+```
+
+Linux/macOS:
+```
+docker build -t isic-sam2-demo:cpu .
+```
+
+Run (mount local models/ and data/samples/ so the container can see them):
+
+PowerShell (Windows):
+```
+docker run --rm -p 8501:8501 ^
+  -v "$PWD/models:/app/models" ^
+  -v "$PWD/data/samples:/app/data/samples" ^
+  --name isic-sam2-demo isic-sam2-demo:cpu
+```
+
+Linux/macOS:
+```
+docker run --rm -p 8501:8501 \
+  -v "$(pwd)/models:/app/models" \
+  -v "$(pwd)/data/samples:/app/data/samples" \
+  --name isic-sam2-demo isic-sam2-demo:cpu
+```
+
+Then open http://localhost:8501
+
+2) GPU image (optional; requires NVIDIA GPU + drivers + nvidia-container-toolkit)
+
+We also provide a `Dockerfile.gpu` that leverages a CUDA-enabled PyTorch base image. Build and run with the NVIDIA runtime:
+
+Build:
+```
+docker build -f Dockerfile.gpu -t isic-sam2-demo:gpu .
+```
+
+Run (Windows PowerShell with NVIDIA runtime):
+```
+docker run --rm -p 8501:8501 ^
+  --gpus all ^
+  -v "$PWD/models:/app/models" ^
+  -v "$PWD/data/samples:/app/data/samples" ^
+  --name isic-sam2-demo-gpu isic-sam2-demo:gpu
+```
+
+Linux/macOS:
+```
+docker run --rm -p 8501:8501 \
+  --gpus all \
+  -v "$(pwd)/models:/app/models" \
+  -v "$(pwd)/data/samples:/app/data/samples" \
+  --name isic-sam2-demo-gpu isic-sam2-demo:gpu
+```
+
+Note: GPU container runs are only beneficial if you have a compatible NVIDIA GPU and drivers installed. Otherwise, use the CPU image.
+
 ## Disclaimer
 This software is provided “as is” for demonstration only. It is NOT intended for clinical use or to provide medical advice.

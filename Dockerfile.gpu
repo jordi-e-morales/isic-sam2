@@ -1,0 +1,32 @@
+# ISIC SAM2 Demo - GPU Dockerfile
+# Requires NVIDIA GPU + drivers + nvidia-container-toolkit on host.
+
+FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn8-runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    STREAMLIT_BROWSER_GATHER_USAGE_STATS=false \
+    STREAMLIT_SERVER_HEADLESS=true
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install app dependencies without pinning torch (base image provides torch)
+COPY requirements.base.txt ./
+RUN python -m pip install --upgrade pip && \
+    pip install -r requirements.base.txt && \
+    # Ensure torchvision is present and CUDA-enabled; match the base CUDA version
+    pip install --upgrade torchvision --index-url https://download.pytorch.org/whl/cu121
+
+# Copy the app
+COPY . .
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
