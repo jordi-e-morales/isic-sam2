@@ -72,14 +72,15 @@ class Sam2Wrapper:
         # Attempt to build model and predictor (supports minor API changes)
         try:
             # Newer API
-            from sam2.build_sam2 import build_sam2  # type: ignore
+            from sam2.build_sam import build_sam2  # type: ignore
             from sam2.sam2_image_predictor import SAM2ImagePredictor  # type: ignore
 
-            mt = self.model_type or _infer_model_type_from_ckpt(ckpt_path)
-            self.model = build_sam2(checkpoint=ckpt_path, model_type=mt, device=self.device)
+
+            cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"  # package-relative path for Hydra
+            self.model = build_sam2(cfg, ckpt_path, device=self.device)
             self.predictor = SAM2ImagePredictor(self.model)
             self.ready = True
-            log.info("Initialized SAM2 model_type=%s on device=%s", mt, self.device)
+            log.info("Initialized SAM2 on device=%s", self.device)
             return
         except Exception as e:
             log.warning("SAM2 new API load failed: %s", e)
@@ -279,3 +280,4 @@ class Sam2Wrapper:
         regions.sort(key=lambda r: r.area, reverse=True)
         keep = regions[0].label
         return (lab == keep)
+
