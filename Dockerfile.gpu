@@ -1,7 +1,7 @@
 # ISIC SAM2 Demo - GPU Dockerfile
 # Requires NVIDIA GPU + drivers + nvidia-container-toolkit on host.
 
-FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn8-runtime
+FROM pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -22,7 +22,7 @@ COPY requirements.base.txt ./
 RUN python -m pip install --upgrade pip && \
     pip install -r requirements.base.txt && \
     # Ensure torchvision is present and CUDA-enabled; match the base CUDA version
-    pip install --upgrade torchvision --index-url https://download.pytorch.org/whl/cu121
+    pip install --upgrade torchvision --index-url https://download.pytorch.org/whl/cu124
 
 # Copy the app
 COPY . .
