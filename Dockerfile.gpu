@@ -27,6 +27,6 @@ RUN python -m pip install --upgrade pip && \
 # Copy the app
 COPY . .
 
-EXPOSE 8501
+EXPOSE 6501
 
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "app.py", "--server.port=6501", "--server.address=0.0.0.0"]
