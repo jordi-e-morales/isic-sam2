@@ -73,7 +73,7 @@ You can download public samples from the ISIC Archive: https://www.isic-archive.
 streamlit run app.py
 ```
 
-Open the URL shown in the terminal (typically http://localhost:8501).
+Open the URL shown in the terminal (typically http://localhost:6501).
 
 ## Usage
 - Select Device on the left (Auto/CPU/CUDA)
@@ -122,7 +122,7 @@ Run (mount local models/ and data/samples/ so the container can see them):
 
 PowerShell (Windows):
 ```
-docker run --rm -p 8501:8501 ^
+docker run --rm -p 6501:6501 ^
   -v "$PWD/models:/app/models" ^
   -v "$PWD/data/samples:/app/data/samples" ^
   --name isic-sam2-demo isic-sam2-demo:cpu
@@ -130,7 +130,7 @@ docker run --rm -p 8501:8501 ^
 
 Linux/macOS:
 ```
-docker run --rm -p 8501:8501 \
+docker run --rm -p 6501:6501 \
   -v "$(pwd)/models:/app/models" \
   -v "$(pwd)/data/samples:/app/data/samples" \
   --name isic-sam2-demo isic-sam2-demo:cpu
@@ -149,7 +149,7 @@ docker build -f Dockerfile.gpu -t isic-sam2-demo:gpu .
 
 Run (Windows PowerShell with NVIDIA runtime):
 ```
-docker run --rm -p 8501:8501 ^
+docker run --rm -p 6501:6501 ^
   --gpus all ^
   -v "$PWD/models:/app/models" ^
   -v "$PWD/data/samples:/app/data/samples" ^
@@ -158,7 +158,7 @@ docker run --rm -p 8501:8501 ^
 
 Linux/macOS:
 ```
-docker run --rm -p 8501:8501 \
+docker run --rm -p 6501:6501 \
   --gpus all \
   -v "$(pwd)/models:/app/models" \
   -v "$(pwd)/data/samples:/app/data/samples" \
